@@ -2,10 +2,16 @@ package com.bc.devsuperior.dslearn.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.bc.devsuperior.dslearn.entities.pk.EnrollmentPK;
@@ -29,6 +35,12 @@ public class Enrollment implements Serializable{
 	private boolean available;
 	
 	private boolean onlyUpdate;
+	
+	@OneToMany(mappedBy = "enrollment")
+	private List<Deliver> deliveries = new ArrayList<>();
+	
+	@ManyToMany(mappedBy = "enrollmentsDone")
+	private Set<Lesson> lessonsDone = new HashSet<>();
 	
 	public Enrollment() {
 		
@@ -91,6 +103,18 @@ public class Enrollment implements Serializable{
 
 	public void setOnlyUpdate(boolean onlyUpdate) {
 		this.onlyUpdate = onlyUpdate;
+	}
+
+	public Set<Lesson> getLessonsDone() {
+		return lessonsDone;
+	}
+
+	public void setLessonsDone(Set<Lesson> lessonsDone) {
+		this.lessonsDone = lessonsDone;
+	}
+
+	public List<Deliver> getDeliveries() {
+		return deliveries;
 	}
 
 	@Override
