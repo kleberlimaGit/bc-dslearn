@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.bc.devsuperior.dslearn.services.exception.DatabaseException;
+import com.bc.devsuperior.dslearn.services.exception.ForbiddenException;
 import com.bc.devsuperior.dslearn.services.exception.ResourceNotFoundException;
+import com.bc.devsuperior.dslearn.services.exception.UnauthorizedException;
 
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class ResourceExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request){
@@ -68,4 +70,20 @@ public class ControllerExceptionHandler {
 		return ResponseEntity.status(status).body(err);
 		
 	}
+	
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<OAuthCustomError> forbidden(ForbiddenException e, HttpServletRequest request){
+		OAuthCustomError err = new OAuthCustomError("Forbidden", e.getMessage());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+		
+	}
+	
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<OAuthCustomError> unauthorized(UnauthorizedException e, HttpServletRequest request){
+		OAuthCustomError err = new OAuthCustomError("Unauthorized", e.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
+		
+	}
+	
+	
 }
